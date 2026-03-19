@@ -24,25 +24,41 @@ resource "azurerm_application_insights" "applicationinsights" {
   tags                = local.tags
 }
 
-resource "azurerm_dashboard_grafana" "example" {
-  count                 = local.deploy_observability_tools ? 1 : 0
-  resource_group_name   = azurerm_resource_group.rg.name
-  location              = azurerm_resource_group.rg.location
-  name                  = "graf-${local.resource_token}"
-  grafana_major_version = 11
+resource "azapi_resource" "grafana" {
+  count                     = local.deploy_observability_tools ? 1 : 0
+  type                      = "Microsoft.Dashboard/grafana@2023-09-01"
+  name                      = "graf-${local.resource_token}"
+  parent_id                 = azurerm_resource_group.rg.id
+  location                  = azurerm_resource_group.rg.location
+  schema_validation_enabled = false
 
   identity {
     type = "SystemAssigned"
   }
 
-  azure_monitor_workspace_integrations {
-    resource_id = azurerm_monitor_workspace.example[0].id
+  body = {
+    sku = {
+      name = "Standard"
+    }
+    properties = {
+      grafanaMajorVersion   = "11"
+      publicNetworkAccess   = "Enabled"
+      grafanaIntegrations = {
+        azureMonitorWorkspaceIntegrations = [
+          {
+            azureMonitorWorkspaceResourceId = azurerm_monitor_workspace.example[0].id
+          }
+        ]
+      }
+    }
   }
+
+  response_export_values = ["identity.principalId"]
 }
 
 resource "azurerm_role_assignment" "grafana1" {
   count                = local.deploy_observability_tools ? 1 : 0
-  scope                = azurerm_dashboard_grafana.example[0].id
+  scope                = azapi_resource.grafana[0].id
   principal_id         = data.azurerm_client_config.current.object_id
   role_definition_name = "Grafana Admin"
 }
@@ -50,6 +66,6 @@ resource "azurerm_role_assignment" "grafana1" {
 resource "azurerm_role_assignment" "grafana2" {
   count                = local.deploy_observability_tools ? 1 : 0
   scope                = azurerm_resource_group.rg.id
-  principal_id         = azurerm_dashboard_grafana.example[0].identity[0].principal_id
+  principal_id         = azapi_resource.grafana[0].output.identity.principalId
   role_definition_name = "Monitoring Data Reader"
 }
