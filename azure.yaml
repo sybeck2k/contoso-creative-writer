@@ -36,16 +36,17 @@ metadata:
 #           shell: sh
 #           run: azd env set REACT_APP_WEB_BASE_URL ${SERVICE_WEB_ENDPOINT_URL}
 hooks:
-  # preprovision:
-  #   shell: sh
-  #   continueOnError: false
-  #   interactive: true
-  #   run: infra/hooks/preprovision.sh
   postprovision:
-    shell: sh
-    continueOnError: false
-    interactive: true
-    run: infra/hooks/postprovision.sh
+    windows:
+      shell: pwsh
+      continueOnError: false
+      interactive: true
+      run: infra/hooks/postprovision.ps1
+    posix:
+      shell: sh
+      continueOnError: false
+      interactive: true
+      run: infra/hooks/postprovision.sh
   # postdeploy:
   #   shell: sh
   #   continueOnError: false
