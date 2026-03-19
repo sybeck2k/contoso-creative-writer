@@ -26,7 +26,7 @@ def get_research(request, instructions, feedback):
 
 
 @trace
-def get_writer(request, feedback, instructions, research=[], products=[]):
+def get_writer(request, feedback, instructions, research={}, products=[]):
     writer_reponse = writer.write(
         request=request, feedback=feedback, instructions=instructions, research=research, products=products
     )

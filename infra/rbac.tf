@@ -19,6 +19,22 @@ resource "azurerm_role_assignment" "openai_user" {
   scope                = azurerm_cognitive_account.cog.id
 }
 
+# Azure AI Developer role on the Foundry project for agent/web search access
+resource "azurerm_role_assignment" "ai_developer_backend" {
+  count                            = try(local.is_default_workspace ? 0 : 1, 0)
+  principal_id                     = azurerm_user_assigned_identity.uai.principal_id
+  role_definition_name             = "Azure AI Developer"
+  scope                            = azapi_resource.ai_foundry_project.id
+  skip_service_principal_aad_check = true
+}
+
+resource "azurerm_role_assignment" "ai_developer_user" {
+  count                = try(local.is_default_workspace ? 0 : 1, 0)
+  principal_id         = var.principal_id
+  role_definition_name = "Azure AI Developer"
+  scope                = azapi_resource.ai_foundry_project.id
+}
+
 resource "azurerm_role_assignment" "aisearchdata_backend" {
   count                            = try(local.is_default_workspace ? 0 : 1, 0)
   principal_id                     = azurerm_user_assigned_identity.uai.principal_id

@@ -83,13 +83,8 @@ output "VECTORDB_TYPE" {
   value = var.vectordb_type
 }
 
-output "BING_SEARCH_ENDPOINT" {
-  value = jsondecode(azapi_resource.bing.output).properties.endpoint
-}
-
-output "BING_SEARCH_KEY" {
-  value     = jsondecode(data.azapi_resource_action.bing.output).key1
-  sensitive = true
+output "FOUNDRY_PROJECT_ENDPOINT" {
+  value = "https://${azurerm_cognitive_account.cog.custom_subdomain_name}.services.ai.azure.com/api/projects/${azapi_resource.ai_foundry_project.name}"
 }
 
 output "APPLICATIONINSIGHTS_CONNECTION_STRING" {

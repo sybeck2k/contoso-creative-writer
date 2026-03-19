@@ -7,7 +7,7 @@ model:
   api: chat
   configuration:
     type: azure_openai
-    azure_deployment: gpt-4
+    azure_deployment: gpt-4o
     api_version: 2023-07-01-preview
   parameters:
     max_tokens: 1200
@@ -48,51 +48,27 @@ of your article:
 {{products}}
 
 # Web Research
-Use this research to write the article. The research can include entities, web search results, and 
-news search results. While it is ok to use the research as a basis for the article, please do not
-copy and paste the research verbatim. Instead, use the research to write a fun and engaging article.
-Do not invent information that is not in the research.
+Use this research to write the article. The research includes a summary of findings from web search
+along with source citations. While it is ok to use the research as a basis for the article, please
+do not copy and paste the research verbatim. Instead, use the research to write a fun and engaging
+article. Do not invent information that is not in the research.
 
-{% if research.entities|length > 0 %}
-## Entity Results (Places, People, or Things)
-{% for item in research.entities %}
-url: {{item.url}}
+## Research Summary
+{{research.summary}}
 
-name: {{item.name}}
-
-description: {{item.description}}
+{% if research.citations|length > 0 %}
+## Source Citations
+{% for citation in research.citations %}
+url: {{citation.url}}
+title: {{citation.title}}
 {% endfor %}
 {% endif %}
 
-{% if research.web|length > 0 %}
-## Web Search Results
-{% for item in research.web %}
-url: {{item.url}}
-
-title: {{item.title}}
-
-description: {{item.description}}
-
-{% endfor %}
-{% endif %}
-
-{% if research.news|length > 0 %}
-## News Search Results
-{% for item in research.news %}
-url: {{item.url}}
-
-title: {{item.title}}
-
-description: {{item.description}}
-{% endfor %}
-{% endif %}
-
-If any research provides citation information, please include it in the document. For example, if the 
-research provides a URL, include it in the document. For example, if provided the following:
+If the research provides citation information, please include it in the document. For example, if
+provided the following:
 
 url: https://en.wikipedia.org/wiki/Satya_Nadella
-name: Satya Nadella - Wikipedia,
-description: Nadella attended the Hyderabad Public School, Begumpet [18] before receiving a bachelor's degree in electrical engineering from the Manipal Institute of Technology in Karnataka in 1988.
+title: Satya Nadella - Wikipedia
 
 The document should include the following:
 Nadella attended the Hyderabad Public School [Citation](https://en.wikipedia.org/wiki/Satya_Nadella) ...

@@ -14,3 +14,5 @@ promptflow-tools
 jupyter
 opentelemetry-instrumentation
 openai==1.44.1
+azure-ai-projects>=1.0.0
+azure-identity>=1.17.0

@@ -23,13 +23,13 @@ variable "workspace" {
 variable "openai_model_name" {
   description = "value of azure openai model name"
   type        = string
-  default     = "gpt-4"
+  default     = "gpt-4o"
 }
 
 variable "openai_model_version" {
   description = "value of azure openai model version"
   type        = string
-  default     = "1106-Preview"
+  default     = "2024-08-06"
 }
 
 variable "openai_model_capacity" {
@@ -41,13 +41,13 @@ variable "openai_model_capacity" {
 variable "openai_35_turbo_model_name" {
   description = "value of azure openai model name"
   type        = string
-  default     = "gpt-35-turbo"
+  default     = "gpt-4o-mini"
 }
 
 variable "openai_35_turbo_model_version" {
   description = "value of azure openai model version"
   type        = string
-  default     = "0613"
+  default     = "2024-07-18"
 }
 
 variable "openai_35_turbo_model_capacity" {

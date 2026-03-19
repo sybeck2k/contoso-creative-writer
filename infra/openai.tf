@@ -9,11 +9,33 @@ resource "azurerm_cognitive_account" "cog" {
   name                  = azurecaf_name.cog_name.result
   location              = var.location
   resource_group_name   = azurerm_resource_group.rg.name
-  kind                  = "OpenAI"
+  kind                  = "AIServices"
   sku_name              = "S0"
   custom_subdomain_name = azurecaf_name.cog_name.result
   tags                  = azurerm_resource_group.rg.tags
   local_auth_enabled    = false
+}
+
+# Foundry project for web search and agent capabilities
+resource "azapi_resource" "ai_foundry_project" {
+  type                      = "Microsoft.CognitiveServices/accounts/projects@2025-06-01"
+  name                      = "project-${local.resource_token}"
+  parent_id                 = azurerm_cognitive_account.cog.id
+  location                  = var.location
+  schema_validation_enabled = false
+
+  body = {
+    sku = {
+      name = "S0"
+    }
+    identity = {
+      type = "SystemAssigned"
+    }
+    properties = {
+      displayName = "Creative Writer Project"
+      description = "Foundry project for creative writing agents"
+    }
+  }
 }
 
 resource "azurerm_cognitive_deployment" "deployment" {
