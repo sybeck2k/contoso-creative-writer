@@ -7,7 +7,7 @@ output "AZURE_DNS_ZONE" {
 }
 
 output "AZURE_OPENAI_ENDPOINT" {
-  value = jsondecode(azapi_resource.cog.output).properties.endpoint
+  value = azapi_resource.cog.output.properties.endpoint
 }
 
 output "AZURE_OPENAI_API_VERSION" {
