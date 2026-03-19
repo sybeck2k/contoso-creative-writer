@@ -29,7 +29,7 @@ resource "azurerm_dashboard_grafana" "example" {
   resource_group_name   = azurerm_resource_group.rg.name
   location              = azurerm_resource_group.rg.location
   name                  = "graf-${local.resource_token}"
-  grafana_major_version = 10
+  grafana_major_version = 11
 
   identity {
     type = "SystemAssigned"
