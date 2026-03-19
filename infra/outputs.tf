@@ -7,7 +7,7 @@ output "AZURE_DNS_ZONE" {
 }
 
 output "AZURE_OPENAI_ENDPOINT" {
-  value = azurerm_cognitive_account.cog.endpoint
+  value = jsondecode(azapi_resource.cog.output).properties.endpoint
 }
 
 output "AZURE_OPENAI_API_VERSION" {
@@ -48,7 +48,7 @@ output "AZURE_OPENAI_35_TURBO_MODEL_VERSION" {
 }
 
 output "AZURE_OPENAI_NAME" {
-  value = azurerm_cognitive_account.cog.name
+  value = azapi_resource.cog.name
 }
 
 output "AZURE_CONTAINER_REGISTRY_ENDPOINT" {
@@ -84,7 +84,7 @@ output "VECTORDB_TYPE" {
 }
 
 output "FOUNDRY_PROJECT_ENDPOINT" {
-  value = "https://${azurerm_cognitive_account.cog.custom_subdomain_name}.services.ai.azure.com/api/projects/${azapi_resource.ai_foundry_project.name}"
+  value = "https://${azurecaf_name.cog_name.result}.services.ai.azure.com/api/projects/${azapi_resource.ai_foundry_project.name}"
 }
 
 output "APPLICATIONINSIGHTS_CONNECTION_STRING" {
