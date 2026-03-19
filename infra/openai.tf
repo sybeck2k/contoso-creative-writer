@@ -60,7 +60,7 @@ resource "azapi_resource" "deployment" {
 
   body = {
     sku = {
-      name     = "Standard"
+      name     = "GlobalStandard"
       capacity = var.openai_model_capacity
     }
     properties = {
@@ -81,7 +81,7 @@ resource "azapi_resource" "gpt35_deployment" {
 
   body = {
     sku = {
-      name     = "Standard"
+      name     = "GlobalStandard"
       capacity = var.openai_35_turbo_model_capacity
     }
     properties = {
