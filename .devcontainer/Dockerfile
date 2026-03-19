@@ -1,6 +1,6 @@
-# Use a specific tag for the bullseye image to ensure reproducibility
+# Use a specific tag for the bookworm image to ensure reproducibility
 ARG IMAGE=python
-ARG TAG=3.11
+ARG TAG=3.11-bookworm
 FROM --platform=amd64 mcr.microsoft.com/devcontainers/${IMAGE}:${TAG} as base
 
 # Setting frontend to noninteractive to avoid user prompts during package installation
@@ -12,10 +12,5 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-# Install Azure DevOps (azd) in a single RUN command to reduce layers.
-# Ensure the use of `-s` and `-S` flags with curl for better error handling and security.
-# The flags '--version' and '--skip-verify' should be used with caution; not specifying a version could lead to stability issues.
-RUN curl -fsSL https://azuresdkreleasepreview.blob.core.windows.net/azd/standalone/pr/3385/install-azd.sh | \
-    bash -s -- \
-      --base-url https://azuresdkreleasepreview.blob.core.windows.net/azd/standalone/pr/3385 \
-      --version '' --skip-verify
+# Install Azure Developer CLI (azd) from the stable release channel
+RUN curl -fsSL https://aka.ms/install-azd.sh | bash
